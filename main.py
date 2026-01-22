@@ -1,19 +1,25 @@
 import cv2
-import time
+import os
 from src.pose_module import PoseDetector
 from src.rules import Evaluator
 
 def main():
-    bench_press = "/Users/guest1/Documents/Smartan-Gym/data/bench press_2.mp4"
-    lat_pulldown = "/Users/guest1/Documents/Smartan-Gym/data/lat pulldown_1.mp4"
-    lateral_raise = "/Users/guest1/Documents/Smartan-Gym/data/lateral raise_10.mp4"
-    squat = "/Users/guest1/Documents/Smartan-Gym/data/squat_15.mp4"
-    shoulder_press = "/Users/guest1/Documents/Smartan-Gym/data/shoulder press_15.mp4"
-    tricep_pushdown = "/Users/guest1/Documents/Smartan-Gym/data/tricep pushdown_1.mp4"
-    bicep_curl = "/Users/guest1/Documents/Smartan-Gym/data/barbell biceps curl_1.mp4"
-    test = "/Users/guest1/Documents/Smartan-Gym/test_data/biceps.mp4"
     
-    cap = cv2.VideoCapture(test) 
+    video_path = "/Path/to/video.mp4"
+    
+    cap = cv2.VideoCapture(video_path) 
+
+    output_dir = '/Users/guest1/Documents/Smartan-Gym/output'
+
+    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    fps = cap.get(cv2.CAP_PROP_FPS) or 30
+    
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v') 
+    output_path = os.path.join(output_dir, 'output_workout.mp4')
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+    out = cv2.VideoWriter(output_path, fourcc, fps, (width, height))
 
     detector = PoseDetector()
     evaluator = Evaluator()
@@ -82,7 +88,13 @@ def main():
         cv2.imshow("Smartan-Gym", img)
         if cv2.waitKey(1) & 0xFF == ord('q'): break
 
+        out.write(img)
+
+        cv2.imshow("Smartan-Gym", img)
+        if cv2.waitKey(1) & 0xFF == ord('q'): break
+
     cap.release()
+    out.release()
     cv2.destroyAllWindows()
 
 if __name__ == "__main__":

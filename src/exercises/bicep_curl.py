@@ -33,7 +33,7 @@ class BicepCurl(BaseExercise):
                 self.feedback = "Good Form"
 
         # TOP: Rep Completion.
-        if elbow_angle < 150:
+        if elbow_angle < 90:
             if elbow_angle < 50:
                 if self.state == "down":
                     self.rep_count += 1

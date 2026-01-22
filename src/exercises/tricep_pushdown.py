@@ -24,7 +24,7 @@ class TricepPushdown(BaseExercise):
             self.feedback = "Ready"
 
         # BOTTOM: Rep Completion.
-        elif elbow_angle > 100:
+        elif elbow_angle > 160:
             if self.state == "down" and is_extending:
                 self.rep_count += 1
                 self.state = "up" 
